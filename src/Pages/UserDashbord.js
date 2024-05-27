@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { BiLike } from 'react-icons/bi';
+
 const UserDashboard = () => {
   const [properties, setProperties] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState(null);
@@ -21,20 +21,6 @@ const UserDashboard = () => {
 
     fetchProperties();
   }, []);
-
-  const handleLike = async (propertyId) => {
-    try {
-      const response = await axios.post(`http://localhost:5000/api/properties/${propertyId}/like`);
-      const updatedProperties = properties.map(property =>
-        property._id === propertyId ? { ...property, likes: response.data.likes } : property
-      );
-      setProperties(updatedProperties);
-      toast.success('Property liked');
-    } catch (error) {
-      console.error('Error liking property:', error);
-      toast.error('Failed to like property. Please try again.');
-    }
-  };
 
   const handleInterested = async (property) => {
     try {
@@ -66,13 +52,6 @@ const UserDashboard = () => {
             >
               Interested
             </button>
-            <div className="flex items-center mt-2">
-              <BiLike 
-                className="text-blue-500 text-2xl cursor-pointer hover:text-blue-700 transition duration-300"
-                onClick={() => handleLike(property._id)}
-              />
-              <span className="ml-2 text-gray-700">{property.likes}</span>
-            </div>
           </div>
         ))}
       </div>
